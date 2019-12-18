@@ -1,3 +1,5 @@
+### Work in progress
+
 import random
 import math
 
@@ -27,21 +29,21 @@ def DiffiMax(node,depth,player,drawThresh,winThresh,yourNum,candidFactor):
     
     if len(node.children) == 1: # If node only has one child
         MiniMax()
-    elif player == yourNum: # Only looks for traps for chosen color and uses MiniMax for your moves
+    elif player == -yourNum: # Only looks for traps for chosen color and uses MiniMax for your moves
         childVals = []
         for i in range(len(node.children)):
             childVals.append((i,node.children[i].value)) # Makes list of children values
         
         if player == -1: # Sorts and calculates according to player
-            sortList = sorted(childVals,reverse=True, key=lambda a:a[1]) 
+            sortList = sorted(childVals, reverse=True, key=lambda a:a[1]) 
             if (len(node.children)*(sortList[0][1] - sortList[1][1])/candidFactor >= winThresh) & (sortList[1][1] >= winThresh) & (node.children.check != 1) & (node.children.capture != 1):
-                
+                MiniMax(node.children[sortList[1][0]])
             else:
                 MiniMax()
         else:
             sortList = sorted(childVals, key=lambda a:a[1])
             if (len(node.children)*(sortList[0][1] - sortList[1][1])/candidFactor <= winThresh) & (sortList[1][1] <= winThresh) & (node.children.check != 1) & (node.children.capture != 1):
-            
+                MiniMax(node.children[sortList[1][0]])
             else:
                 MiniMax()
     else:
