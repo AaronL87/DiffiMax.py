@@ -25,6 +25,7 @@ class createTree:
 tree = createTree(1,4)
 # If depth == even, then algorithm begins with opponent choice (because choice starts with depth 1)
 
+
 linesList = []
 
 # drawThresh is always positive
@@ -36,60 +37,53 @@ linesList = []
 # TODO Have MiniMax that alternates by returning to DiffiMax
 
 def DiffiMax(node,drawThresh,winThresh,yourNum):
-    '''
-    if (node.value >= drawThresh) & (node.player == yourNum) & (node.player == -1): 
-        # TODO Look for last DiffiMax trap continuation in lineList and delete it. Run MiniMax there instead.
-        # TODO If there are no DiffiMax traps in lineList, then player is lost because only MiniMax has been used
-        pass
-    elif (node.value <= -drawThresh) & (node.player == yourNum) & (node.player == 1):
-        pass
-    '''
+    # TODO Look for last DiffiMax trap continuation in lineList and delete it. Run MiniMax there instead.
+    # TODO If there are no DiffiMax traps in lineList, then player is lost because only MiniMax has been used
 
-    if (node.depth != 1) & (node.player == -yourNum) & (node.value == None):
-        largestVal = None
+    if node.depth != 1: # Cycles through all nodes
         for child in node.children:
-            childObj = DiffiMax(child,drawThresh,winThresh,yourNum)
-            if largestVal == None:
-                largestVal = childObj
-            elif childObj.value > largestVal.value:
-                largestVal = childObj
-        return largestVal
-        
-    elif (node.depth != 1) & (node.player == yourNum) & (node.value == None):
-        pass
+            node.value = DiffiMax(child,drawThresh,winThresh,yourNum)
 
-    if (node.depth == 1) & (node.player == -yourNum): # If your opponent is the first to choose
-        if len(node.children) == 1: # If node only has one child
-            linesList.append((node.children[0],node.children[0].value))
-            return node.children[0]
-        elif node.player == -1: # Player has white pieces
+    if node.player == -yourNum: # If it is your opponent's choice
+        if len(node.children) == 1: # If node only has one child. Checked because next condition requires two children.
+            linesList = [(node.children[0],node.children[0].value)]+linesList
+            return node.children[0].value
+        
+        elif node.player == -1: # Opponent has black pieces
+            # Checks for difficult positions for opponent while accounting for forcing moves:
             if (node.children[-1].value - node.children[-2].value <= -winThresh) & (node.children[-2].value >= winThresh)\
                                                                                 & (node.children[-1].value >= -drawThresh)\
                                                                                 & (node.check != 1) & (node.capture != 1)\
                                                                                 & (node.children[-1].capture != 1)\
                                                                                 & (node.children[-2].capture != 1):     
-                linesList.append((node.children[-2],node.children[-2].value,node.children[-1].value - node.children[-2].value))
-                return node.children[-2]
+                linesList = [(node.children[-2],node.children[-2].value,node.children[-1].value]+linesList
+                return node.children[-2].value
+
             else:
-                linesList.append((node.children[-1],node.children[-1].value))
-                return node.children[-1]
-        elif node.player == 1: # For player with black pieces, opponent with white
-            # Checks for difficult positions for opponent while accounting for forcing moves:
+                linesList = [(node.children[-1],node.children[-1].value)]+linesList
+                return node.children[-1].value
+        
+        elif node.player == 1: # Opponent has white pieces
             if (node.children[0].value - node.children[1].value >= winThresh) & (node.children[1].value <= -winThresh)\
                                                                                 & (node.children[0].value <= drawThresh)\
                                                                                 & (node.check != 1) & (node.capture != 1)\
                                                                                 & (node.children[0].capture != 1)\
                                                                                 & (node.children[1].capture != 1):  
-                linesList.append((node.children[1],node.children[1].value,node.children[0].value - node.children[0].value))
-                return node.children[1]
+                linesList = [(node.children[1],node.children[1].value,node.children[0].value]+linesList
+                return node.children[1].value
+            
             else:
-                linesList.append((node.children[0],node.children[0].value))
-                return node.children[0]
+                linesList = [(node.children[0],node.children[0].value)]+linesList
+                return node.children[0].value
 
-    elif (node.depth == 1) & (node.player == yourNum): #If you are the first to choose 
-        if node.player == 1:
-            linesList.append((node.children[0],node.children[0].value))
-            return node.children[0]
-        elif node.player == -1:
-            linesList.append((node.children[-1],node.children[-1].value))
-            return node.children[-1]
+    elif node.player == yourNum: # If it is your choice
+        if node.player == 1: # You have the white pieces
+            linesList = [(node.children[0],node.children[0].value)]+linesList
+            return node.children[0].value
+        
+        elif node.player == -1: # You have the black pieces
+            linesList = [(node.children[-1],node.children[-1].value)]+linesList
+            return node.children[-1].value
+            
+  DiffiMax(tree,1,2.5,1)
+  print(linesList)
