@@ -4,7 +4,7 @@
 
 ## This algorithm is essentially Minimax, but it chooses the second-best option for your opponent if there is enough of an evaluation difference between your opponent's first and second-best options and there are a substantial number of move choices on your opponent's turn. That is, it prioritizes traps by assuming that your opponent will make a mistake but that, if they get it correct, your evaluation is still in the "drawish range." 
 
-## In order for the choices to be unforced, the moves could not involve a recapture.
+## In order to avoid forced moves that aren't traps, it only considers moves that aren't a check or capture/recapture.
 
 ## Eventually, lines with multiple traps will be given precedence.
 
