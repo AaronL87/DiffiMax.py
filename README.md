@@ -6,8 +6,6 @@
 
 ## In order to avoid forced moves that aren't traps, it only considers moves that aren't a check or capture/recapture.
 
-## Eventually, lines with multiple traps will be given precedence.
-
 ## There are other conditions that can be added for what constitutes a trap candidate, like weighing the trap evaluation difference based on the number of moves in the position.
 
 ## Algorithm can be optimized because only first and second-best options need to be chosen, so all of the children don't need to be sorted.
