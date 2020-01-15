@@ -8,4 +8,4 @@
 
 ## There are other conditions that can be added for what constitutes a trap candidate, like weighing the trap evaluation difference based on the number of moves in the position.
 
-## Algorithm can be optimized because only first and second-best options need to be chosen, so all of the children don't need to be sorted.
+## This algorithm can be optimized because only first and second-best options need to be chosen, so all of the children don't need to be sorted.
