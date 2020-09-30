@@ -11,6 +11,6 @@ In order to avoid forced moves that aren't traps, it only considers moves that a
 
 There are other conditions that can be added for what constitutes a trap candidate, like weighing the trap evaluation difference based on the number of moves in the position.
 
-This algorithm can be optimized because only first and second-best options need to be chosen, so all of the children don't need to be sorted.
+This algorithm can be optimized because only first and second-best options need to be chosen, so all of the child nodes don't need to be sorted.
 
 This can be further optimized using alpha-beta pruning on the half of choices that you make and an alternative alpha-beta pruning on your opponent's choices. I will be working on that alternative ongoingly.
